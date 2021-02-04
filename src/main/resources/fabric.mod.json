@@ -8,10 +8,19 @@
     "Potatoboy9999"
   ],
   "contact": {
-    "issues": ""
+    "issues": "https://github.com/PotatoPresident/worldborderfixer/issues",
+    "sources": "https://github.com/PotatoPresident/worldborderfixer",
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/world-border-fix"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.discord": "https://discord.gg/ByaVuebAPb"
+      }
+    }
   },
   "license": "MIT",
-  "icon": "assets/worldborderfix/icon.png",
+  "icon": "icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
@@ -23,7 +32,6 @@
   ],
   "depends": {
     "fabricloader": ">=0.11.1",
-    "fabric": "*",
-    "minecraft": "1.16.5"
+    "minecraft": "^1.16.5"
   }
 }
