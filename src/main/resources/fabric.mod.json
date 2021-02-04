@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "worldborderfix",
+  "version": "${version}",
+  "name": "Worldborderfix",
+  "description": "Fixes per world, world border issues",
+  "authors": [
+    "Potatoboy9999"
+  ],
+  "contact": {
+    "issues": ""
+  },
+  "license": "MIT",
+  "icon": "assets/worldborderfix/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "us.potatoboy.worldborderfix.Worldborderfix"
+    ]
+  },
+  "mixins": [
+    "worldborderfix.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.11.1",
+    "fabric": "*",
+    "minecraft": "1.16.5"
+  }
+}
