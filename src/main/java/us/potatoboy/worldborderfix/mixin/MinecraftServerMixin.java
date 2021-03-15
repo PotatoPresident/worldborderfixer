@@ -5,7 +5,6 @@ import net.minecraft.server.PlayerManager;
 import net.minecraft.server.WorldGenerationProgressListener;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.world.SaveProperties;
 import net.minecraft.world.World;
 import net.minecraft.world.border.WorldBorder;
 import net.minecraft.world.border.WorldBorderListener;
@@ -24,41 +23,37 @@ import java.util.Map;
 
 @Mixin(MinecraftServer.class)
 public abstract class MinecraftServerMixin {
-    @Shadow
-    @Final
-    private SaveProperties saveProperties;
+	@Shadow
+	@Final
+	private Map<RegistryKey<World>, ServerWorld> worlds;
 
-    @Shadow
-    @Final
-    private Map<RegistryKey<World>, ServerWorld> worlds;
+	@Inject(method = "createWorlds", at = @At(value = "TAIL"))
+	private void loadOtherBorder(WorldGenerationProgressListener worldGenerationProgressListener, CallbackInfo ci) {
+		worlds.forEach((registryKey, world) -> {
+			WorldBorder worldBorder = world.getWorldBorder();
 
-    @Inject(method = "createWorlds", at = @At(value = "TAIL"))
-    private void loadOtherBorder(WorldGenerationProgressListener worldGenerationProgressListener, CallbackInfo ci) {
-        worlds.forEach((registryKey, world) -> {
-            WorldBorder worldBorder = world.getWorldBorder();
+			if (registryKey.getValue() != DimensionOptions.OVERWORLD.getValue()) {
+				WorldBorderState worldBorderState = world.getPersistentStateManager().getOrCreate(WorldBorderState::new, "worldBorder");
 
-            if (registryKey.getValue() != DimensionOptions.OVERWORLD.getValue()) {
-                WorldBorderState worldBorderState = world.getPersistentStateManager().getOrCreate(WorldBorderState::new, "worldBorder");
+				worldBorder.setCenter(worldBorderState.getCenterX(), worldBorderState.getCenterZ());
+				worldBorder.setSize(worldBorderState.getSize());
+				worldBorder.setBuffer(worldBorderState.getBuffer());
+				worldBorder.setDamagePerBlock(worldBorderState.getDamagePerBlock());
+				worldBorder.setWarningBlocks(worldBorderState.getWarningBlocks());
+				worldBorder.setWarningTime(worldBorderState.getWarningTime());
+			}
 
-                worldBorder.setCenter(worldBorderState.getCenterX(), worldBorderState.getCenterZ());
-                worldBorder.setSize(worldBorderState.getSize());
-                worldBorder.setBuffer(worldBorderState.getBuffer());
-                worldBorder.setDamagePerBlock(worldBorderState.getDamagePerBlock());
-                worldBorder.setWarningBlocks(worldBorderState.getWarningBlocks());
-                worldBorder.setWarningTime(worldBorderState.getWarningTime());
-            }
+			worldBorder.addListener(new PerWorldBorderListener(world));
+		});
+	}
 
-            worldBorder.addListener(new PerWorldBorderListener(world));
-        });
-    }
+	@Redirect(method = "createWorlds", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/border/WorldBorder;addListener(Lnet/minecraft/world/border/WorldBorderListener;)V"))
+	private void addListener(WorldBorder worldBorder, WorldBorderListener listener) {
+		return;
+	}
 
-    @Redirect(method = "createWorlds", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/border/WorldBorder;addListener(Lnet/minecraft/world/border/WorldBorderListener;)V"))
-    private void addListener(WorldBorder worldBorder, WorldBorderListener listener) {
-        return;
-    }
-
-    @Redirect(method = "createWorlds", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/PlayerManager;setMainWorld(Lnet/minecraft/server/world/ServerWorld;)V"))
-    private void setBorderListeners(PlayerManager playerManager, ServerWorld world) {
-        return;
-    }
+	@Redirect(method = "createWorlds", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/PlayerManager;setMainWorld(Lnet/minecraft/server/world/ServerWorld;)V"))
+	private void setBorderListeners(PlayerManager playerManager, ServerWorld world) {
+		return;
+	}
 }

@@ -4,11 +4,12 @@
   "package": "us.potatoboy.worldborderfix.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "PlayerManagerMixin",
     "MinecraftServerMixin",
-    "ServerWorldMixin"
-  ],
-  "client": [
+    "PlayerManagerMixin",
+    "ServerWorldMixin",
+    "WorldBorderMixin",
+    "WorldBorderS2CPacketMixin",
+    "WorldMixin"
   ],
   "injectors": {
     "defaultRequire": 1
