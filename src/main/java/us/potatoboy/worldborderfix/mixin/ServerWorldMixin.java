@@ -9,11 +9,11 @@ import us.potatoboy.worldborderfix.WorldBorderState;
 
 @Mixin(ServerWorld.class)
 public class ServerWorldMixin {
-	@Inject(method = "saveLevel", at = @At("HEAD"))
-	private void saveBorder(CallbackInfo ci) {
-		ServerWorld world = (ServerWorld) (Object) this;
-		WorldBorderState worldBorderState = world.getPersistentStateManager().getOrCreate(WorldBorderState::new, "worldBorder");
+    @Inject(method = "saveLevel", at = @At("HEAD"))
+    private void saveBorder(CallbackInfo ci) {
+        ServerWorld world = (ServerWorld) (Object) this;
+        WorldBorderState worldBorderState = world.getPersistentStateManager().getOrCreate(WorldBorderState::fromNbt, WorldBorderState::new, "worldBorder");
 
-		worldBorderState.fromBorder(world.getWorldBorder());
-	}
+        worldBorderState.fromBorder(world.getWorldBorder());
+    }
 }

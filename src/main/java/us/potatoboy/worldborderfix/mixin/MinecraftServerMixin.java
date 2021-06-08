@@ -33,11 +33,11 @@ public abstract class MinecraftServerMixin {
 			WorldBorder worldBorder = world.getWorldBorder();
 
 			if (registryKey.getValue() != DimensionOptions.OVERWORLD.getValue()) {
-				WorldBorderState worldBorderState = world.getPersistentStateManager().getOrCreate(WorldBorderState::new, "worldBorder");
+				WorldBorderState worldBorderState = world.getPersistentStateManager().getOrCreate(WorldBorderState::fromNbt, WorldBorderState::new, "worldBorder");
 
 				worldBorder.setCenter(worldBorderState.getCenterX(), worldBorderState.getCenterZ());
 				worldBorder.setSize(worldBorderState.getSize());
-				worldBorder.setBuffer(worldBorderState.getBuffer());
+				worldBorder.setSafeZone(worldBorderState.getBuffer());
 				worldBorder.setDamagePerBlock(worldBorderState.getDamagePerBlock());
 				worldBorder.setWarningBlocks(worldBorderState.getWarningBlocks());
 				worldBorder.setWarningTime(worldBorderState.getWarningTime());
