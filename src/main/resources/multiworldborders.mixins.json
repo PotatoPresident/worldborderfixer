@@ -8,6 +8,7 @@
     "PlayerManagerMixin",
     "ServerWorldMixin",
     "WorldBorderCenterChangePacketMixin",
+    "WorldBorderCommandMixin",
     "WorldBorderInitializeS2CPacketMixin",
     "WorldBorderMixin",
     "WorldMixin"

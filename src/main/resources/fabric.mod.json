@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "id": "worldborderfix",
+  "id": "multiworldborders",
   "version": "${version}",
-  "name": "Worldborderfix",
-  "description": "Fixes per world, world border issues",
+  "name": "Multi World Borders",
+  "description": "Makes world borders work per dimension",
   "authors": [
     "Potatoboy9999"
   ],
@@ -24,14 +24,14 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "us.potatoboy.worldborderfix.Worldborderfix"
+      "us.potatoboy.worldborderfix.MultiWorldBorder"
     ]
   },
   "mixins": [
-    "worldborderfix.mixins.json"
+    "multiworldborders.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.11.3",
-    "minecraft": "1.17.x"
+    "minecraft": "1.18.x"
   }
 }

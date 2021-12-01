@@ -48,12 +48,8 @@ public abstract class MinecraftServerMixin {
 	}
 
 	@Redirect(method = "createWorlds", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/border/WorldBorder;addListener(Lnet/minecraft/world/border/WorldBorderListener;)V"))
-	private void addListener(WorldBorder worldBorder, WorldBorderListener listener) {
-		return;
-	}
+	private void addListener(WorldBorder worldBorder, WorldBorderListener listener) {}
 
 	@Redirect(method = "createWorlds", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/PlayerManager;setMainWorld(Lnet/minecraft/server/world/ServerWorld;)V"))
-	private void setBorderListeners(PlayerManager playerManager, ServerWorld world) {
-		return;
-	}
+	private void setBorderListeners(PlayerManager playerManager, ServerWorld world) {}
 }
