@@ -17,7 +17,7 @@ import java.util.function.Supplier;
 
 @Mixin(World.class)
 public abstract class WorldMixin {
-    @Redirect(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/dimension/DimensionType;getCoordinateScale()D"))
+    @Redirect(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/dimension/DimensionType;coordinateScale()D"))
     private double setBorderCoordinateScale(DimensionType dimensionType) {
         return 1.0D;
     }
@@ -26,7 +26,7 @@ public abstract class WorldMixin {
             method = "<init>",
             at = @At(value = "INVOKE", target = "Ljava/lang/Thread;currentThread()Ljava/lang/Thread;")
     )
-    private void setWorldBorderWorld(MutableWorldProperties properties, RegistryKey<World> registryRef, RegistryEntry<DimensionType> registryEntry, Supplier<Profiler> profiler, boolean isClient, boolean debugWorld, long seed, CallbackInfo ci) {
+    private void setWorldBorderWorld(MutableWorldProperties properties, RegistryKey<World> registryRef, RegistryEntry<DimensionType> registryEntry, Supplier<Profiler> profiler, boolean isClient, boolean debugWorld, long seed, int maxChainedNeighborUpdates, CallbackInfo ci) {
         World world = (World) (Object) this;
         ((BorderWithWorld) world.getWorldBorder()).setWorld(world);
     }
