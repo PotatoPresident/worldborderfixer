@@ -18,7 +18,7 @@ public abstract class WorldBorderInitializeS2CPacketMixin {
         World world = ((BorderWithWorld) worldBorder).getWorld();
 
         if (world != null) {
-            return worldBorder.getCenterX() * world.getDimension().getCoordinateScale();
+            return worldBorder.getCenterX() * world.getDimension().coordinateScale();
         }
 
         return worldBorder.getCenterX();
@@ -32,7 +32,7 @@ public abstract class WorldBorderInitializeS2CPacketMixin {
         World world = ((BorderWithWorld) worldBorder).getWorld();
 
         if (world != null) {
-            return worldBorder.getCenterZ() * world.getDimension().getCoordinateScale();
+            return worldBorder.getCenterZ() * world.getDimension().coordinateScale();
         }
 
         return worldBorder.getCenterZ();
