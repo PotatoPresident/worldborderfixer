@@ -5,6 +5,7 @@ import net.minecraft.server.PlayerManager;
 import net.minecraft.server.WorldGenerationProgressListener;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.registry.RegistryKey;
+import net.minecraft.world.PersistentState;
 import net.minecraft.world.World;
 import net.minecraft.world.border.WorldBorder;
 import net.minecraft.world.border.WorldBorderListener;
@@ -33,7 +34,8 @@ public abstract class MinecraftServerMixin {
 			WorldBorder worldBorder = world.getWorldBorder();
 
 			if (registryKey.getValue() != DimensionOptions.OVERWORLD.getValue()) {
-				WorldBorderState worldBorderState = world.getPersistentStateManager().getOrCreate(WorldBorderState::fromNbt, WorldBorderState::new, "worldBorder");
+				// Requires fabric-object-builder-api-v1 (see https://github.com/FabricMC/fabric/issues/3327 for more information, why we are passing null as the dataFixTypes)
+				WorldBorderState worldBorderState = world.getPersistentStateManager().getOrCreate(new PersistentState.Type<>(WorldBorderState::new, WorldBorderState::fromNbt, null), "worldBorder");
 
 				worldBorder.setCenter(worldBorderState.getCenterX(), worldBorderState.getCenterZ());
 				worldBorder.setSize(worldBorderState.getSize());
