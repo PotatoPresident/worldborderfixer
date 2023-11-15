@@ -7,7 +7,9 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.world.MutableWorldProperties;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -18,9 +20,18 @@ import java.util.function.Supplier;
 
 @Mixin(World.class)
 public abstract class WorldMixin {
+    @Shadow public abstract boolean isClient();
+
+    @Shadow @Final public boolean isClient;
+
     @Redirect(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/dimension/DimensionType;coordinateScale()D"))
     private double setBorderCoordinateScale(DimensionType dimensionType) {
-        return 1.0D;
+        // We do not want to modify the interpretation of the world border on the client side, it should work on servers with and without worldborderfix
+        if (this.isClient()) {
+            return dimensionType.coordinateScale();
+        } else {
+            return 1.0D;
+        }
     }
 
     @Inject(

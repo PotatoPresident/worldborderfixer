@@ -17,11 +17,10 @@ public abstract class WorldBorderInitializeS2CPacketMixin {
     private double scaleCenterX(WorldBorder worldBorder) {
         World world = ((BorderWithWorld) worldBorder).getWorld();
 
-        if (world != null) {
-            return worldBorder.getCenterX();
-        }
-
-        return worldBorder.getCenterX();
+        // The client is going to divide our world border center by the coordinate scale, so we need to multiply it by
+        // the coordinate scale to compensate for this.
+        final double centerX = worldBorder.getCenterX();
+        return world == null || world.isClient ? centerX : centerX * world.getDimension().coordinateScale();
     }
 
     @Redirect(
@@ -31,10 +30,9 @@ public abstract class WorldBorderInitializeS2CPacketMixin {
     private double scaleCenterZ(WorldBorder worldBorder) {
         World world = ((BorderWithWorld) worldBorder).getWorld();
 
-        if (world != null) {
-            return worldBorder.getCenterZ();
-        }
-
-        return worldBorder.getCenterZ();
+        // The client is going to divide our world border center by the coordinate scale, so we need to multiply it by
+        // the coordinate scale to compensate for this.
+        final double centerZ = worldBorder.getCenterZ();
+        return world == null || world.isClient ? centerZ : centerZ * world.getDimension().coordinateScale();
     }
 }
