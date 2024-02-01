@@ -1,6 +1,7 @@
 package us.potatoboy.worldborderfix;
 
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.world.PersistentState;
 import net.minecraft.world.border.WorldBorder;
 
@@ -27,7 +28,7 @@ public class WorldBorderState extends PersistentState {
         this.warningTime = warningTime;
     }
 
-    public static WorldBorderState fromNbt(NbtCompound tag) {
+    public static WorldBorderState fromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup wrapperLookup) {
         return new WorldBorderState(
                 tag.getDouble("BorderCenterX"),
                 tag.getDouble("BorderCenterZ"),
@@ -40,7 +41,7 @@ public class WorldBorderState extends PersistentState {
     }
 
     @Override
-    public NbtCompound writeNbt(NbtCompound tag) {
+    public NbtCompound writeNbt(NbtCompound tag, RegistryWrapper.WrapperLookup wrapperLookup) {
         tag.putDouble("BorderCenterX", centerX);
         tag.putDouble("BorderCenterZ", centerZ);
         tag.putDouble("BorderSize", size);
