@@ -10,7 +10,7 @@ import us.potatoboy.worldborderfix.WorldBorderState;
 
 @Mixin(ServerWorld.class)
 public abstract class ServerWorldMixin {
-    @Inject(method = "saveLevel", at = @At("HEAD"))
+    @Inject(method = "save", at = @At("HEAD"))
     private void saveBorder(CallbackInfo ci) {
         ServerWorld world = (ServerWorld) (Object) this;
         // Requires fabric-object-builder-api-v1 (see https://github.com/FabricMC/fabric/issues/3327 for more information, why we are passing null as the dataFixTypes)
