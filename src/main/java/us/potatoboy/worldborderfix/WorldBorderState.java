@@ -15,13 +15,19 @@ public class WorldBorderState extends PersistentState {
     private double damagePerBlock = WorldBorder.DEFAULT_BORDER.getDamagePerBlock();
     private int warningBlocks = WorldBorder.DEFAULT_BORDER.getWarningBlocks();
     private int warningTime = WorldBorder.DEFAULT_BORDER.getWarningTime();
+    private static final Codec<WorldBorderState> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            Codec.DOUBLE.fieldOf("BorderCenterX").forGetter(WorldBorderState::getCenterX),
+            Codec.DOUBLE.fieldOf("BorderCenterZ").forGetter(WorldBorderState::getCenterZ),
+            Codec.DOUBLE.fieldOf("BorderSize").forGetter(WorldBorderState::getSize),
+            Codec.DOUBLE.fieldOf("BorderSafeZone").forGetter(WorldBorderState::getBuffer),
+            Codec.DOUBLE.fieldOf("BorderDamagePerBlock").forGetter(WorldBorderState::getDamagePerBlock),
+            Codec.INT.fieldOf("BorderWarningBlocks").forGetter(WorldBorderState::getWarningBlocks),
+            Codec.INT.fieldOf("BorderWarningTime").forGetter(WorldBorderState::getWarningTime)
+    ).apply(instance, WorldBorderState::new));
 
-    public WorldBorderState(Context context) {
-        super();
-    }
+    public WorldBorderState() {}
 
-    public WorldBorderState(Context context, double centerX, double centerZ, double size, double buffer, double damagePerBlock, int warningBlocks, int warningTime) {
-        this(context);
+    public WorldBorderState(double centerX, double centerZ, double size, double buffer, double damagePerBlock, int warningBlocks, int warningTime) {
         this.centerX = centerX;
         this.centerZ = centerZ;
         this.size = size;
@@ -34,23 +40,9 @@ public class WorldBorderState extends PersistentState {
     public static final PersistentStateType<WorldBorderState> TYPE = new PersistentStateType<>(
         "worldBorder",
         WorldBorderState::new,
-        WorldBorderState::createCodec,
+        WorldBorderState.CODEC,
         DataFixTypes.LEVEL
     );
-
-    private static Codec<WorldBorderState> createCodec(Context context) {
-        return RecordCodecBuilder.create(instance -> instance.group(
-            Codec.DOUBLE.fieldOf("BorderCenterX").forGetter(WorldBorderState::getCenterX),
-            Codec.DOUBLE.fieldOf("BorderCenterZ").forGetter(WorldBorderState::getCenterZ),
-            Codec.DOUBLE.fieldOf("BorderSize").forGetter(WorldBorderState::getSize),
-            Codec.DOUBLE.fieldOf("BorderSafeZone").forGetter(WorldBorderState::getBuffer),
-            Codec.DOUBLE.fieldOf("BorderDamagePerBlock").forGetter(WorldBorderState::getDamagePerBlock),
-            Codec.INT.fieldOf("BorderWarningBlocks").forGetter(WorldBorderState::getWarningBlocks),
-            Codec.INT.fieldOf("BorderWarningTime").forGetter(WorldBorderState::getWarningTime)
-        ).apply(instance, (centerX, centerZ, size, buffer, damagePerBlock, warningBlocks, warningTime) ->
-            new WorldBorderState(context, centerX, centerZ, size, buffer, damagePerBlock, warningBlocks, warningTime)
-        ));
-    }
 
     public double getCenterX() {
         return centerX;
